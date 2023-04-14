@@ -1,21 +1,25 @@
 package jm.task.core.jdbc.model;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+//persistence - это спецификация, которая регулирует, как Java-объекты сохраняются в БД,
+// а Hibernate - это реализация этой спецификации + свой функционал
+import javax.persistence.*;
 
-@Table
+@Entity //т.е. этот класс будет отображаться в БД в виде таблицы
+@Table (name = "users")//указываем, к какой именно таблице мы привязываем класс
 public class User {
-    @Id
+
+    @Id // Этой аннотацией помечаем, что поле Id - primary key
+    @GeneratedValue (strategy = GenerationType.IDENTITY) // описывает стратегию по генерации значений д/столбца Id (автоматическое увеличение в этом случае)
+    @Column (name = "id") // указываем, с каким столбцом в таблице users нашей БД связано это поле
     private Long id;
 
-    @Column
+    @Column (name = "name")
     private String name;
 
-    @Column
+    @Column (name = "lastName")
     private String lastName;
 
-    @Column
+    @Column (name = "age")
     private Byte age;
 
     public User() {
