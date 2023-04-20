@@ -4,13 +4,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-
 import jm.task.core.jdbc.model.User;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
-import org.hibernate.service.ServiceRegistry;
+
 
 public class Util {
     private static SessionFactory sessionFactory; //SessionFactory - фабрика по производству сессий.
@@ -49,7 +47,10 @@ public class Util {
                 properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect"); // Тип СУБД
                 properties.put(Environment.SHOW_SQL, "true"); // Hibernate будет дублировать в консоль все запросы, которые выполняет
                 properties.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread"); //класс текущей сессии???
-                properties.put(Environment.HBM2DDL_AUTO, "create-drop"); //Hibernate поменяет структуру базы данных
+                properties.put(Environment.HBM2DDL_AUTO, "create-drop"); //Это свойство, обеспечивающее проверку
+                // или экспорт ddl схемы при создании SessionFactory
+                // В данном случае поставили настройку такую, что в начале работы Hibernate создаст все таблицы,
+                // а в конце работы – удалит их за собой.
 
                 sessionFactory = new Configuration() //Создаем экземпляр Configuration
                         .addProperties(properties) //или setProperties() ? // Вносим в эту конфигурацию свойства
