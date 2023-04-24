@@ -18,18 +18,18 @@ public class Util {
     private static final String DB_PASSWORD = "rootroot";
 
     // Подключение к БД ч/з Connection. (Устаревший способ)
-    public Connection getConnection () {
-        Connection connection = null; //Объявили переменную типа Connection
-        try {
-//            Class.forName(DB_DRIVER); //Зарегистрировали драйвер-SQL в DriverManager'e. (Без этой строчки тоже все работает)
-            connection = DriverManager.getConnection(DB_URL, DB_USERNAME,DB_PASSWORD); //DriverManager-класс упр-я JDBC, отслеживает все доступные драйверы и управляет установлением соединений между БД и соответствующим драйвером.
-            System.out.println("Соединение установлено");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Соединение не установлено");
-        }
-        return connection;
-    }
+//    public Connection getConnection () {
+//        Connection connection = null; //Объявили переменную типа Connection
+//        try {
+////            Class.forName(DB_DRIVER); //Зарегистрировали драйвер-SQL в DriverManager'e. (Без этой строчки тоже все работает)
+//            connection = DriverManager.getConnection(DB_URL, DB_USERNAME,DB_PASSWORD); //DriverManager-класс упр-я JDBC, отслеживает все доступные драйверы и управляет установлением соединений между БД и соответствующим драйвером.
+//            System.out.println("Соединение установлено");
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            System.out.println("Соединение не установлено");
+//        }
+//        return connection;
+//    }
     // Подключение к БД ч/з SessionFactory. (Современный способ)
     // Метод создания SessionFactory
     public static SessionFactory getSessionFactory() {
@@ -47,10 +47,9 @@ public class Util {
                 properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect"); // Тип СУБД
                 properties.put(Environment.SHOW_SQL, "true"); // Hibernate будет дублировать в консоль все запросы, которые выполняет
                 properties.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread"); //класс текущей сессии???
-                properties.put(Environment.HBM2DDL_AUTO, "create-drop"); //Это свойство, обеспечивающее проверку
+                properties.put(Environment.HBM2DDL_AUTO, "validate"); //Это свойство, обеспечивающее проверку
                 // или экспорт ddl схемы при создании SessionFactory
-                // В данном случае поставили настройку такую, что в начале работы Hibernate создаст все таблицы,
-                // а в конце работы – удалит их за собой.
+
 
                 sessionFactory = new Configuration() //Создаем экземпляр Configuration
                         .addProperties(properties) //или setProperties() ? // Вносим в эту конфигурацию свойства

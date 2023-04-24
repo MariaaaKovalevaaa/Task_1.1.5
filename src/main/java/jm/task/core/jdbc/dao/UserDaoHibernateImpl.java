@@ -2,28 +2,27 @@ package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import jm.task.core.jdbc.util.Util;
 
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import java.util.List;
 
-public class UserDaoHibernateImpl extends Util implements UserDao {
+public class UserDaoHibernateImpl implements UserDao {
+    private final Util util = new Util();
 
     public UserDaoHibernateImpl() {
     }
 
     @Override
     public void createUsersTable() { // Метод создания таблицы
-        Session session = getSessionFactory().getCurrentSession(); // Получили/начали сессию
+
+        Session session = Util.getSessionFactory().getCurrentSession();// Получили/начали сессию
         Transaction transaction = session.beginTransaction(); //Начали/открыли транзакцию в рамках этой сессии
 
         //Сформировали SQL-запрос
         String query = "CREATE TABLE IF NOT EXISTS users " +
-                "(Id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, name VARCHAR(20), " +
+                "(Id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT, name VARCHAR(20), " +
                 "lastName VARCHAR(20), age TINYINT(128))";
 
 
@@ -32,12 +31,11 @@ public class UserDaoHibernateImpl extends Util implements UserDao {
 
         transaction.commit(); // Закрыли транзакцию
         session.close(); // Закрыли сессию
-
     }
 
     @Override
     public void dropUsersTable() { //Удаление таблицы
-        Session session = getSessionFactory().getCurrentSession(); // Получили/начали сессию
+        Session session = Util.getSessionFactory().getCurrentSession();// Получили/начали сессию
         Transaction transaction = session.beginTransaction(); //Начали/открыли транзакцию в рамках этой сессии
 
         session.createSQLQuery("DROP TABLE IF EXISTS users").executeUpdate(); // В рамках текущей сессии
@@ -52,7 +50,7 @@ public class UserDaoHibernateImpl extends Util implements UserDao {
     @Override
     public void saveUser(String name, String lastName, byte age) {  //Сохранение/Вставка юзера в таблицу
 
-        Session session = getSessionFactory().getCurrentSession(); // Получили/начали сессию
+        Session session = Util.getSessionFactory().getCurrentSession(); // Получили/начали сессию
         Transaction transaction = session.beginTransaction(); //Начали/открыли транзакцию в рамках этой сессии
 
         session.save(new User(name, lastName, age)); // Сохраняем экземпляр класса User
@@ -64,7 +62,7 @@ public class UserDaoHibernateImpl extends Util implements UserDao {
 
     @Override
     public void removeUserById(long id) { //Удаление юзера по Id
-        Session session = getSessionFactory().getCurrentSession(); // Получили/начали сессию
+        Session session = Util.getSessionFactory().getCurrentSession(); // Получили/начали сессию
         Transaction transaction = session.beginTransaction(); //Начали/открыли транзакцию в рамках этой сессии
 
         User user = session.load(User.class, id); // Загрузили экземпляр класса User по id (load возвращает объект из БД по его id),
@@ -79,7 +77,7 @@ public class UserDaoHibernateImpl extends Util implements UserDao {
     @Override
     public List<User> getAllUsers() {//Получить список юзеров
 
-        Session session = getSessionFactory().getCurrentSession(); // Получили/начали сессию
+        Session session = Util.getSessionFactory().getCurrentSession(); // Получили/начали сессию
         Transaction transaction = session.beginTransaction(); //Начали/открыли транзакцию в рамках этой сессии
 
         String hql = "FROM User"; // Создали запрос "Показать всю таблицу", Entity-класс которой - User.
@@ -95,9 +93,10 @@ public class UserDaoHibernateImpl extends Util implements UserDao {
         return users;
 
     }
+
     @Override
     public void cleanUsersTable() { //Удалить информацию в таблице
-        Session session = getSessionFactory().getCurrentSession(); // Получили/начали сессию
+        Session session = Util.getSessionFactory().getCurrentSession(); // Получили/начали сессию
         Transaction transaction = session.beginTransaction(); //Начали/открыли транзакцию в рамках этой сессии
 
         session.createSQLQuery("DELETE FROM users").executeUpdate(); //Создали запрос "Удалить всю таблицу"

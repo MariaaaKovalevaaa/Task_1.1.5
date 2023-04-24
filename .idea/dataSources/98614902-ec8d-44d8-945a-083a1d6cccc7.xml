@@ -1074,7 +1074,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <CollationName>utf8mb3_general_ci</CollationName>
     </table>
     <column id="302" parent="301" name="Id">
-      <AutoIncrement>1</AutoIncrement>
+      <AutoIncrement>2</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
